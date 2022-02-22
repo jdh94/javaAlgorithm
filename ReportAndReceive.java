@@ -1,46 +1,80 @@
-import java.util.*;
-class ReportAndReceive {
-    public int[] solution(String[] id_list, String[] report, int k) {
+import java.util.ArrayList;
+import java.util.Collections;
 
-        Map<String,List<String>> map= new HashMap<>();
-        Map<String,Integer> mail_map = new HashMap<>();
-        // 모든 유저에 대해 신고자리스트를 생성
-        // Key: 유저, Value: 유저를 신고한 사람들
-        for(String user: id_list){
-            List<String> list = new LinkedList<>();
-            map.put(user,list);
-            mail_map.put(user,0);
+class Solution {
+
+    static class Rate{
+        int idx;	// stage number
+        double rate; 	// fail rate
+
+        public Rate(int idx, double rate) {
+            this.idx = idx;
+            this.rate = rate;
         }
-        // 신고자: attacker 신고당한자 : defender
-        // 신고당한 건수를 처리함       
-        for(String temp: report){
-            String[] arr=temp.split(" ");
-            String attacker=arr[0];
-            String defender=arr[1];
-            List<String> list =map.get(defender);
-            //중복신고를 막음
-            if(list.contains(attacker)){
+    }
+
+    public static int[] solution(int N, int[] stages) {
+
+
+        int[] user_cnt = new int[N + 2];	// 각 stage에 머물러있는 user 수
+        int[] user_total_cnt = new int[N + 1];	// 각 stage에 도달한 전체 user 수
+
+        for (int i = 0; i < stages.length; i++) {
+            user_cnt[stages[i]]++;
+        }
+
+        // 스테이지에 도달한 유저 수 누적(?)하여 구하기
+        // 맨 마지막 stage는 n번째 + (n+1)번째
+        user_total_cnt[N] = user_cnt[N] + user_cnt[N + 1];
+        for (int i = N-1; i >= 1; i--) {
+            user_total_cnt[i] = user_cnt[i] + user_total_cnt[i + 1];
+        }
+
+        ArrayList<Rate> arr = new ArrayList<>(); // stage 번호와 실패율을 저장
+        for (int i = 1; i <= N; i++) {
+
+            if(user_total_cnt[i]==0){ //스테이지에 도달한 유저가 없는 경우 해당 스테이지의 실패율은 0
+                arr.add(new Rate(i, 0));
                 continue;
             }
-            list.add(attacker);
-            map.put(defender,list);
+
+            double rate = (double) user_cnt[i] / user_total_cnt[i];
+            arr.add(new Rate(i, rate));
         }
-        // K번 신고당한 사람을 찾고, 신고한 사람들에게 Count증가
-        for(String data: map.keySet()){
-            List<String> list =map.get(data);
-            if(list.size()>=k){
-                for(String user: list){
-                    int count =mail_map.get(user)+1;
-                    mail_map.put(user,count);
-                }
-            }
+
+        // fail rate가 높은 순으로 sorting
+        Collections.sort(arr, ((o1, o2) -> Double.compare(o2.rate, o1.rate)));
+
+        // sorting 된 실패율의 stage 번호 저장
+        int[] answer = new int[N];
+        for (int i=0; i<arr.size(); i++) {
+            answer[i] = arr.get(i).idx;
         }
-        int i=0;
-        int[] answer = new int[id_list.length];
-        for(String data: id_list){
-            answer[i]= mail_map.get(data);
-            i++;
-        }
+
         return answer;
     }
 }
+
+
+
+    public static int compare(double d1, double d2) {
+        // input 12 3 5 1 7
+        // asd 1 3 5 7 12
+        // des 12 7 5 3 1
+
+        12 5 3
+        compare(o2, 01)
+
+        if (d1 < d2)
+            return -1;           // Neither val is NaN, thisVal is smaller
+        if (d1 > d2)
+            return 1;            // Neither val is NaN, thisVal is larger
+
+        // Cannot use doubleToRawLongBits because of possibility of NaNs.
+        long thisBits    = Double.doubleToLongBits(d1);
+        long anotherBits = Double.doubleToLongBits(d2);
+
+        return (thisBits == anotherBits ?  0 : // Values are equal
+                (thisBits < anotherBits ? -1 : // (-0.0, 0.0) or (!NaN, NaN)
+                        1));                          // (0.0, -0.0) or (NaN, !NaN)
+    }
