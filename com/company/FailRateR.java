@@ -1,3 +1,5 @@
+package com.company;
+
 public class FailRateR {
         public String[] solution(int n, int[] arr1, int[] arr2) {
             String[] answer = {};

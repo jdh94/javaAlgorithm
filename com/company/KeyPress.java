@@ -1,8 +1,6 @@
-public class KeyPress {
-    public static void main(){
-        System.out.println("aa");
-    }
+package com.company;
 
+public class KeyPress {
         public String solution(int[] numbers, String hand) {
             String answer = "";
 

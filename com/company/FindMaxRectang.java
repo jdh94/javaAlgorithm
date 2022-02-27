@@ -1,3 +1,5 @@
+package com.company;
+
 class FindMaxRectang {
     public int solution(int[][] sizes) {
         // 가장큰 가로크기, 가장큰 세로크기 
