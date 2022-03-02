@@ -1,15 +1,4 @@
-package com.company;
-
-public class Main {
-
-    public static void main(String[] args) {
-
-        System.out.println(Solution.solution("1S3D5S"));
-    }
-}
-
-
-class Solution {
+class DartSol {
     public static int solution(String dartResult) {
         // 1. 문자열을 받아와 숫자, 문자열, 특수문자로 구분해준다.
         // 2. 숫자를 읽으면 그 뒤 문자열을 읽어준다. 문자열을 읽은 뒤 특수문자를 읽어준다.
