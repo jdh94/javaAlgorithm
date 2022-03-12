@@ -1,3 +1,7 @@
+package com.company;
+
+import java.util.*;
+
 class DartSol {
     public static int solution(String dartResult) {
         // 1. 문자열을 받아와 숫자, 문자열, 특수문자로 구분해준다.
