@@ -1,96 +1,71 @@
 package com.company;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
+
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
-        int n = in.nextInt();
-        int s = in.nextInt();
+    //함수에서 사용할 변수들
+    static int[][] check; //간선 연결상태
+    static boolean[] checked; //확인 여부
+    static int n; //정점개수
+    static int m; //간선개수
+    static int start; //시작정점
 
-        NumPra.solution( n, s);
-    }
-}
+    public static void main(String[] args) throws IOException {
+        Scanner sc = new Scanner(System.in);
+        n = sc.nextInt();
+        m = sc.nextInt();
+        start = sc.nextInt();
 
-class NumPra{
-    public static void solution(int n, int s){
-        // k번째에 존재할 숫자의 갯수 = 2k-1
-        // 2k번째 정순, 2k-1번째 역순
-        // k번째 첫 숫자의 위치 = n-k+1 즉, 공백의 갯수= n-k
-        int k = 1;
+        check = new int[1001][1001]; //좌표를 그대로 받아들이기 위해 +1해서 선언
+        checked = new boolean[1001]; //초기값 False
 
-        for(int i=0; i<n; i++) {
-            //공백갯수
-            for (int j = 1; j < n - i; j++) {
-                System.out.print(" ");
-            }
+        //간선 연결상태 저장
+        for(int i = 0; i < m; i++) {
+            int x = sc.nextInt();
+            int y = sc.nextInt();
 
-            if(k%2 == 0) {
-                for (int l = 1; l <= 2 * k - 1; l++) {
-                    //각 층 숫자출력
-                    System.out.print(s);
-                    s++;
-                    if (s > 9)
-                        s = 1;
-                }
-            }else{
-                List<Integer> tempList = new ArrayList<Integer>();
-                for (int l = 1; l <= 2 * k - 1; l++) {
-                    tempList.add(s);
-                    s++;
-                    if (s > 9)
-                        s = 1;
-                }
-
-                for(int l=1; l<= 2*k-1; l++) {
-                    //각 층 숫자출력
-                    System.out.print(tempList.get(2*k-1-l));
-                }
-            }
-
-            //다음층
-            k++;
-            System.out.println("");
-        }
-    }
-}
-
-
-class Solution {
-    public static int solution(String dartResult) {
-        // 1. 문자열을 받아와 숫자, 문자열, 특수문자로 구분해준다.
-        // 2. 숫자를 읽으면 그 뒤 문자열을 읽어준다. 문자열을 읽은 뒤 특수문자를 읽어준다.
-        // 3. 이전 점수는 항상 기억하고 있는다.
-        int answer = 0;
-
-        char[] darts = dartResult.toCharArray();
-        int[] score = new int[3];
-        int cnt = -1;
-
-        for(int i=0; i<darts.length; i++){
-            if(darts[i] >= '0' && darts[i] <= '9'){
-                cnt++;
-                if(darts[i] == '1' && darts[i+1] == '0'){
-                    score[cnt] = 10;
-                    i++;
-                }else{
-                    score[cnt] = Integer.parseInt(String.valueOf(darts[i]));
-                }
-            }else if(darts[i] == 'D'){
-                score[cnt] *= score[cnt];
-            }else if(darts[i] == 'T'){
-                score[cnt] *= score[cnt] * score[cnt];
-            }else if(darts[i] == '*'){
-                if(cnt > 0)
-                    score[cnt-1] *= 2;
-                score[cnt] *= 2;
-            }else if(darts[i] == '#'){
-                score[cnt] *= -1;
-            }
+            check[x][y] = check[y][x] = 1;
         }
 
-        return answer;
+        dfs(start); //dfs호출
+
+        checked = new boolean[1001]; //확인상태 초기화
+        System.out.println(); //줄바꿈
+
+        bfs(); //bfs호출
+    }
+
+    //시작점을 변수로 받아 확인, 출력 후 다음 연결점을 찾아 시작점을 변경하여 재호출
+    public static void dfs(int i) {
+        checked[i] = true;
+        System.out.print(i + " ");
+
+        for(int j = 1; j <= n; j++) {
+            if(check[i][j] == 1 && checked[j] == false) {
+                dfs(j);
+            }
+        }
+    }
+
+    public static void bfs() {
+        Queue<Integer> queue = new LinkedList<Integer>();
+        queue.offer(start); //시작점도 Queue에 넣어야 함
+        checked[start] = true;
+        System.out.print(start + " ");
+
+        //Queue가 빌 때까지 반복. 방문 정점은 확인, 출력 후 Queue에 넣어 순서대로 확인
+        while(!queue.isEmpty()) {
+            int temp = queue.poll();
+
+            for(int j = 1; j <= n; j++) {
+                if(check[temp][j] == 1 && checked[j] == false) {
+                    queue.offer(j);
+                    checked[j] = true;
+                    System.out.print(j + " ");
+                }
+            }
+        }
     }
 }
