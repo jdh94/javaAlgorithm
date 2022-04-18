@@ -1,4 +1,4 @@
-package com.company;
+package etc;
 
 class FindMaxRectang {
     public int solution(int[][] sizes) {

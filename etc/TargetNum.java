@@ -1,4 +1,4 @@
-package com.company;
+package etc;
 
 class TargetNum {
     static int answer = 0;

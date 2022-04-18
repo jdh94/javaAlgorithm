@@ -1,4 +1,4 @@
-package com.company;
+package etc;
 
 public class KeyPress {
         public String solution(int[] numbers, String hand) {
