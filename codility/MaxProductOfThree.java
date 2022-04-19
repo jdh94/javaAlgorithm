@@ -13,18 +13,4 @@ public class MaxProductOfThree {
         A[5] = 6;
 
     }
-
-    public static int solution(int[] A){
-        max = 0;
-        int
-
-        dfs(int A[], int )
-
-        for(int i=0; i<A.length; i++){
-
-        }
-
-    }
-
-    public static void dfs(int )
 }
