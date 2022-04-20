@@ -34,15 +34,16 @@ public class B2866hashset {
             arr[c] = sb+"";
         }
 
-        for(int r=0; r<R; r++){
+        stop:for(int r=0; r<R; r++){
             set = new HashSet<>();
             for(int c=0; c<C; c++){
-                String now  = arr[c].substring(r);
+                String now = arr[c].substring(r);
                 if(set.contains(now)) break stop;
                 else set.add(now);
             }
-            System.out.println(cnt);
+            cnt++;
         }
+        System.out.println(cnt);
     }
 
 }
