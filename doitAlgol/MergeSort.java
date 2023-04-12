@@ -10,6 +10,8 @@ public class MergeSort{
             int j = 0;
             int k = left;
 
+
+
             mergeSort(a, left, center); // 앞부분 병합정렬
             mergeSort(a, center+1, right); // 뒷부분 병합정렬
 

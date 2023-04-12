@@ -16,7 +16,6 @@ public class B1351 {
         // A[5] = A[5/2] + A[5/3] = A[2] + A[1]
         // A[6] = A[6/2] + A[6/3] = A[3] + A[2]
         // A[7] = A[7/2] + A[7/3] = A[3] + A[2]
-
         Scanner scanner = new Scanner(System.in);
 
         int N = scanner.nextInt();
