@@ -11,6 +11,7 @@ public class Test {
 //        t	p	result
 //        "3141592"	"271"	2
         System.out.println(test.solution("10203", "15"));
+        System.out.println(test.solution("10203", "15"));
     }
 
     static class Solution {
